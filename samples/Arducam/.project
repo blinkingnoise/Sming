@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>PortExpander_MCP23S17</name>
+	<name>Arducam</name>
 	<comment></comment>
 	<projects>
-		<project>SmingFramework</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
