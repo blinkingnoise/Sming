@@ -18,9 +18,13 @@ export WIFI_PWD=""
 export TERMINAL='python -m serial.tools.miniterm $(COM_PORT) $(COM_SPEED_SERIAL) --dtr 0 --rts 0 '
 
 # Com port speed
-# export COM_SPEED=115200
-export COM_SPEED=76800
+export COM_SPEED=115200
+#export COM_SPEED=76800
 
-# MQTT Broaker
+# MQTT Broker
+export MQTT_HOST="test.mosquitto.org"
+export MQTT_PORT=1883
 
-
+#MQTT Broker credentials
+export MQTT_USERNAME="" 
+export MQTT_PWD=""
