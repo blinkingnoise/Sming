@@ -148,6 +148,7 @@ public:
   void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
   void setRotation(uint8_t r);
   void invertDisplay(bool i);
+
   inline void setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
   {	  transmitCmdData(ILI9341_CASET, MAKEWORD(x0 >> 8, x0 & 0xFF, x1 >> 8, x1 & 0xFF));
   	  transmitCmdData(ILI9341_PASET, MAKEWORD(y0 >> 8, y0 & 0xFF, y1 >> 8, y1 & 0xFF));
