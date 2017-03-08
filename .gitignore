@@ -3,6 +3,8 @@ language.settings.xml
 .settings
 nbproject
 .*.swp
+Sming/compiler/lib/lib*.a
+docs/api
 Sming.wiki
 .idea/
 CMakeLists.txt

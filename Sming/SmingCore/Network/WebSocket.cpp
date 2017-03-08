@@ -17,10 +17,12 @@ WebSocket::WebSocket(HttpServerConnection* conn)
 
 WebSocket::~WebSocket()
 {
+#if ENABLE_CMD_EXECUTOR
 	if (commandExecutor)
 	{
 		delete commandExecutor;
 	}
+#endif
 }
 
 bool WebSocket::initialize(HttpRequest& request, HttpResponse& response)
@@ -65,13 +67,25 @@ void WebSocket::sendBinary(const uint8_t* data, int size)
 
 void WebSocket::enableCommand()
 {
+#if ENABLE_CMD_EXECUTOR
 	if (!commandExecutor)
 	{
 		commandExecutor = new CommandExecutor(this);
 	}
+#endif
 }
 
 void WebSocket::close()
 {
 	connection->close();
+}
+
+void WebSocket::setUserData(void* userData)
+{
+	this->userData = userData;
+}
+
+void* WebSocket::getUserData()
+{
+	return userData;
 }

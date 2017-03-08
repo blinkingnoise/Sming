@@ -5,8 +5,12 @@
 #include <SmingCore/SmingCore.h>
 
 //////////////////////////// Wi-Fi config ///////////////////////////////////////
-#define WIFI_SSID	"Garage12"
-#define WIFI_PWD	"bunkerwifi"
+#ifndef WIFI_SSID
+	#define WIFI_SSID	"Garage12"
+#endif
+#ifndef WIFI_PWD
+	#define WIFI_PWD	"bunkerwifi"
+#endif
 
 //////////////////////////// MQTT config ///////////////////////////////////////
 #define SERVER		"192.168.2.138"
