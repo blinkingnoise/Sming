@@ -20,7 +20,7 @@ void showInfo();
 void onConnected();
 void onConnectionFail();
 
-UdpConnection udp
+UdpConnection udp;
 
 APPLEMIDI_CREATE_INSTANCE(UdpConnection, AppleMIDI);
 
