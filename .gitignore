@@ -4,3 +4,6 @@ language.settings.xml
 nbproject
 .*.swp
 Sming.wiki
+.idea/
+CMakeLists.txt
+
