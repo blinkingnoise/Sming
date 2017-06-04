@@ -1,0 +1,36 @@
+# SDK
+export ESP_HOME=~/esp8266/esp-open-sdk
+
+# Sming
+export SMING_HOME=~/esp8266/Sming/Sming/
+
+# esptool2
+export PATH=$PATH:$ESP_HOME/esptool2/
+
+# xtensa gdb
+export PATH=$PATH:$ESP_HOME/xtensa-lx106-elf/bin/
+
+# SPI-Mode: qio:defualt, dio: ESP-12E, NodeMCU 
+export SPI_MODE=dio
+
+# UploadBautRate: for vm use: 230400
+export COM_SPEED_ESPTOOL=921600
+
+# Wifi Settings
+export WIFI_SSID="mySSID"
+export WIFI_PWD=""
+
+# Terminal
+export TERMINAL='python -m serial.tools.miniterm $(COM_PORT) $(COM_SPEED_SERIAL) --dtr 0 --rts 0 '
+
+# Com port speed
+export COM_SPEED=115200
+#export COM_SPEED=76800
+
+# MQTT Broker
+export MQTT_HOST="test.mosquitto.org"
+export MQTT_PORT=1883
+
+#MQTT Broker credentials
+export MQTT_USERNAME="" 
+export MQTT_PWD=""
