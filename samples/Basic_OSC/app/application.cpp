@@ -21,7 +21,7 @@ void onReceive(UdpConnection &connection, char *data, int size, IPAddress remote
 void onStationGotIP(IPAddress ip, IPAddress gateway, IPAddress netmask);
 
 OSCErrorCode error;
-int32_t ledState = LOW;
+int32_t ledState = HIGH;
 
 
 // UDP server
@@ -50,7 +50,8 @@ void init() {
 }
 
 void showSystemInfo() {
-  Serial.printf("\r\nsming version: %s\r\n", SMING_VERSION);
+  Serial.println("\r\n\n=============================");
+  Serial.printf("sming version: %s\r\n", SMING_VERSION);
   Serial.printf("sdk: v%s\r\n", system_get_sdk_version());
   Serial.printf("free heap: %d\r\n", system_get_free_heap_size());
   Serial.printf("cpu frequency: %d MHz\r\n", system_get_cpu_freq());
@@ -59,6 +60,7 @@ void showSystemInfo() {
   Serial.printf("boot mode: %d\r\n", system_get_boot_mode());
   Serial.printf("adc: %d\r\n", system_adc_read());
   Serial.printf("wifi ssid: %s\r\n", WifiStation.getSSID().c_str());
+  Serial.println("=============================\r\n\n");
 }
 
 void onStationGotIP(IPAddress ip, IPAddress gateway, IPAddress netmask){
@@ -76,8 +78,8 @@ void onReceive(UdpConnection &connection, char *data, int size, IPAddress remote
 
   debugf("UDP Sever callback from %s:%d, %d bytes", remoteIP.toString().c_str(), remotePort, size);
 
-  if(size > 0){
-    bundle.fill(*data);
+  for(int c = 0; c<size; c++){
+    bundle.fill(static_cast<uint8_t>(data[c]));
   }
 
   if(!bundle.hasError()){
@@ -91,7 +93,7 @@ void onReceive(UdpConnection &connection, char *data, int size, IPAddress remote
 
 void led(OSCMessage &msg) {
   ledState = msg.getInt(0);
-  digitalWrite(LED_PIN, static_cast<uint8_t>(ledState));
+  digitalWrite(LED_PIN, static_cast<uint8_t>(!ledState));
   Serial.print("/led: ");
   Serial.println(ledState);
 }
