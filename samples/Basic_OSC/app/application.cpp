@@ -16,8 +16,11 @@
 
 // forward declarations
 void showSystemInfo();
+
 void led(OSCMessage &msg);
+
 void onReceive(UdpConnection &connection, char *data, int size, IPAddress remoteIP, uint16_t remotePort);
+
 void onStationGotIP(IPAddress ip, IPAddress gateway, IPAddress netmask);
 
 OSCErrorCode error;
@@ -63,7 +66,7 @@ void showSystemInfo() {
   Serial.println("=============================\r\n\n");
 }
 
-void onStationGotIP(IPAddress ip, IPAddress gateway, IPAddress netmask){
+void onStationGotIP(IPAddress ip, IPAddress gateway, IPAddress netmask) {
   udp.listen(localPort);
 
   Serial.println("\r\n=== UDP SERVER STARTED ===");
@@ -73,17 +76,48 @@ void onStationGotIP(IPAddress ip, IPAddress gateway, IPAddress netmask){
   Serial.println("=============================\r\n");
 }
 
-void onReceive(UdpConnection &connection, char *data, int size, IPAddress remoteIP, uint16_t remotePort){
+void onReceive(UdpConnection &connection, char *data, int size, IPAddress remoteIP, uint16_t remotePort) {
   OSCBundle bundle;
+  char address[256];
+  char message[1024];
 
-  debugf("UDP Sever callback from %s:%d, %d bytes", remoteIP.toString().c_str(), remotePort, size);
 
-  for(int c = 0; c<size; c++){
-    bundle.fill(static_cast<uint8_t>(data[c]));
+  Serial.printf("UDP Sever callback from %s:%d, %d bytes\r\n", remoteIP.toString().c_str(), remotePort, size);
+
+  bundle.fill(reinterpret_cast<uint8_t *>(data), size);
+
+  Serial.printf("Got %d messages:\r\n", bundle.size());
+
+  if( bundle.hasError()){
+    Serial.printf("bundle with error %d\r\n" ,bundle.getError());
   }
 
-  if(!bundle.hasError()){
-    bundle.dispatch("/led", led);
+
+  for (int i = 0; i < bundle.size(); i++) {
+    bundle.getOSCMessage(i)->getAddress(address, 0);
+    Serial.print(address);
+    Serial.printf(" [%c]:", bundle.getOSCMessage(i)->getType(0));
+
+    switch (bundle.getOSCMessage(i)->getType(0)) {
+      case 'i':
+        Serial.printf(" %d\r\n", bundle.getOSCMessage(i)->getInt(0));
+        break;
+      case 'f':
+        Serial.printf(" %f\r\n", bundle.getOSCMessage(i)->getFloat(0));
+        break;
+      case 's':
+        bundle.getOSCMessage(i)->getString(0, message, 1024);
+        Serial.printf(" %s\r\n", message);
+        break;
+      default:
+        Serial.print(" unknown\r\n");
+    }
+
+  }
+  Serial.println("\n");
+
+
+  if (!bundle.hasError()) {
   } else {
     error = bundle.getError();
     Serial.print("error: ");
@@ -93,9 +127,9 @@ void onReceive(UdpConnection &connection, char *data, int size, IPAddress remote
 
 void led(OSCMessage &msg) {
   ledState = msg.getInt(0);
-  digitalWrite(LED_PIN, static_cast<uint8_t>(!ledState));
-  Serial.print("/led: ");
+  Serial.print("got /led: ");
   Serial.println(ledState);
+  digitalWrite(LED_PIN, static_cast<uint8_t>(ledState == 0));
 }
 
 
