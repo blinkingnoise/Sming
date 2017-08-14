@@ -13,6 +13,8 @@
 #ifndef _NWDigital_H_
 #define _NWDigital_H_
 
+#define IRAM_ATTR __attribute__((section(".iram.text")))
+
 #include "../SmingCore/ESP8266EX.h"
 #include "../Wiring/WiringFrameworkDependencies.h"
 

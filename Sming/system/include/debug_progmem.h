@@ -52,6 +52,13 @@ extern "C" {
 #define MACROQUOT(x) #x
 #define MACROQUOTE(x) MACROQUOT(x)
 
+#define printf_P_stack(f_P, ...) \
+  ({ \
+    char __localF[256]; \
+    /*memset(__localF, 0, sizeof(__localF));*/ \
+    m_printf(strncpy_P(__localF, sizeof(__localF), (f_P)), ##__VA_ARGS__); \
+  })
+
 //A static const char[] is defined having a unique name (log_ prefix, filename and line number)
 //This will be stored in the irom section(on flash) feeing up the RAM
 //Next special version of printf from FakePgmSpace is called to fetch and print the message

@@ -11,6 +11,7 @@
 #ifndef _SMING_CORE_Timer_H_
 #define _SMING_CORE_Timer_H_
 
+#define IRAM_ATTR __attribute__((section(".iram.text")))
 
 #include "../SmingCore/Interrupts.h"
 #include "../SmingCore/Delegate.h"
@@ -126,11 +127,16 @@ public:
      */
     void IRAM_ATTR setCallback(TimerDelegate delegateFunction);
 
-    /** @} */
 
 protected:
     static void IRAM_ATTR processing(void *arg);
 
+    /** @brief  virtual timer loop() method
+     *  @note   Can be override in class derivations. If overwriten,
+     *          no classic other callbacks are working.
+     */
+    virtual void tick();
+    /** @} */
 
 private:
     os_timer_t timer;
@@ -144,6 +150,8 @@ private:
     // was added to allow for longer timer intervals.
     uint16_t long_intvl_cntr = 0;
     uint16_t long_intvl_cntr_lim = 0;
+
+
 };
 
 #endif /* _SMING_CORE_Timer_H_ */
