@@ -11,6 +11,7 @@
 #ifndef _SMING_CORE_Timer_H_
 #define _SMING_CORE_Timer_H_
 
+#define IRAM_ATTR __attribute__((section(".iram.text")))
 
 #include "../SmingCore/Interrupts.h"
 #include "../SmingCore/Delegate.h"
