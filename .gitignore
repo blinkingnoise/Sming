@@ -14,3 +14,7 @@ nbproject
 GTAGS
 GRTAGS
 GPATH
+/Sming.settings
+.idea/
+CMakeLists.txt
+cmake-build-debug/
