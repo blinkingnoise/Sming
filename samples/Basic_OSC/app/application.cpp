@@ -19,12 +19,13 @@ void showSystemInfo();
 
 void led(OSCMessage &msg);
 
-void onReceive(UdpConnection &connection, char *data, int size, IPAddress remoteIP, uint16_t remotePort);
+void
+onReceive(UdpConnection &connection, char *data, int size, IPAddress remoteIP, uint16_t remotePort);
 
 void onStationGotIP(IPAddress ip, IPAddress gateway, IPAddress netmask);
 
 OSCErrorCode error;
-int32_t ledState = HIGH;
+uint8_t ledState = HIGH;
 
 
 // UDP server
@@ -76,20 +77,22 @@ void onStationGotIP(IPAddress ip, IPAddress gateway, IPAddress netmask) {
   Serial.println("=============================\r\n");
 }
 
-void onReceive(UdpConnection &connection, char *data, int size, IPAddress remoteIP, uint16_t remotePort) {
+void onReceive(UdpConnection &connection, char *data, int size, IPAddress remoteIP,
+               uint16_t remotePort) {
   OSCBundle bundle;
   char address[256];
   char message[1024];
 
 
-  Serial.printf("UDP Sever callback from %s:%d, %d bytes\r\n", remoteIP.toString().c_str(), remotePort, size);
+  Serial.printf("UDP Sever callback from %s:%d, %d bytes\r\n", remoteIP.toString().c_str(),
+                remotePort, size);
 
   bundle.fill(reinterpret_cast<uint8_t *>(data), size);
 
   Serial.printf("Got %d messages:\r\n", bundle.size());
 
-  if( bundle.hasError()){
-    Serial.printf("bundle with error %d\r\n" ,bundle.getError());
+  if (bundle.hasError()) {
+    Serial.printf("bundle with error %d\r\n", bundle.getError());
   }
 
 
@@ -118,6 +121,7 @@ void onReceive(UdpConnection &connection, char *data, int size, IPAddress remote
 
 
   if (!bundle.hasError()) {
+    bundle.dispatch("/led", led);
   } else {
     error = bundle.getError();
     Serial.print("error: ");
@@ -126,10 +130,17 @@ void onReceive(UdpConnection &connection, char *data, int size, IPAddress remote
 }
 
 void led(OSCMessage &msg) {
-  ledState = msg.getInt(0);
-  Serial.print("got /led: ");
-  Serial.println(ledState);
-  digitalWrite(LED_PIN, static_cast<uint8_t>(ledState == 0));
+  if (msg.isInt(0)) {
+    Serial.printf("got /led: %d", msg.getInt(0));
+    ledState = static_cast<uint8_t>(msg.getInt(0));
+  }
+
+  if (msg.isFloat(0)) {
+    Serial.printf("got /led: %f", msg.getFloat(0));
+    ledState = static_cast<uint8_t>(msg.getFloat(0));
+  }
+
+  digitalWrite(LED_PIN, ledState);
 }
 
 
