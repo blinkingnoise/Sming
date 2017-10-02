@@ -132,12 +132,12 @@ void onReceive(UdpConnection &connection, char *data, int size, IPAddress remote
 void led(OSCMessage &msg) {
   if (msg.isInt(0)) {
     Serial.printf("got /led: %d", msg.getInt(0));
-    ledState = static_cast<uint8_t>(msg.getInt(0));
+    ledState = !static_cast<uint8_t>(msg.getInt(0));
   }
 
   if (msg.isFloat(0)) {
     Serial.printf("got /led: %f", msg.getFloat(0));
-    ledState = static_cast<uint8_t>(msg.getFloat(0));
+    ledState = !static_cast<uint8_t>(msg.getFloat(0));
   }
 
   digitalWrite(LED_PIN, ledState);

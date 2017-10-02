@@ -11,8 +11,8 @@ export SPI_MODE=dio
 export COM_SPEED_ESPTOOL=921600
 
 # Wifi Settings
-export WIFI_SSID="mySSID"
-export WIFI_PWD=""
+export WIFI_SSID="AcmeLabs"
+export WIFI_PWD="123456789a"
 
 # Terminal
 export TERMINAL='python -m serial.tools.miniterm $(COM_PORT) $(COM_SPEED_SERIAL) --dtr 0 --rts 0 '
